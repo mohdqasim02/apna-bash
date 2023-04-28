@@ -1,7 +1,13 @@
 const fs = require('fs');
 
-const format = function(list) {
+const formatDirectories = function(list) {
   return list.join(',').replaceAll(',' , ' '); 
+};
+
+const formatInput = function(commands) {
+  return commands.split('\n').slice(0, -1).map(function(command) {
+    return command.split(' ');
+  }); 
 };
 
 const pwd = function() {
@@ -14,7 +20,7 @@ const getOrDefault = function(path) {
 
 const ls = function(directory) {
   const directories = fs.readdirSync(getOrDefault(directory));
-  console.log(format(directories));
+  console.log(formatDirectories(directories));
 };
 
 const cd = function(path) {
@@ -22,12 +28,10 @@ const cd = function(path) {
   process.env.PWD = process.cwd();
 };
 
-pwd();
-ls();
-cd('workspace');
-pwd();
-ls();
-cd('personal');
-pwd();
-ls();
-pwd();
+const main = function() {
+  const input = fs.readFileSync('./apna-script.ab', 'utf-8');
+  const commands = formatInput(input);
+  console.log(commands);
+};
+
+main();
