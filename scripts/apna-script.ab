@@ -9,3 +9,6 @@ ls
 cd ../..
 pwd
 ls
+cd /Users/mohdqasim/workspace/JavaScript/
+pwd
+ls
