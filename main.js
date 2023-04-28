@@ -2,7 +2,7 @@ const fs = require('fs');
 let pwd = process.env.PWD; 
 
 const formatFiles = function(files) {
-  return files.join(',').replaceAll(',' , ' '); 
+  return files.join(' '); 
 };
 
 const getCommands = function(commands) {
