@@ -6,4 +6,6 @@ ls
 cd personal
 pwd
 ls
+cd ../..
 pwd
+ls
