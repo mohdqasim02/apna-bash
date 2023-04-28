@@ -5,8 +5,8 @@ const formatFiles = function(files) {
   return files.join(' '); 
 };
 
-const getCommands = function(commands) {
-  return commands.split('\n').slice(0, -1).map(function(command) {
+const getCommands = function(script) {
+  return script.split('\n').slice(0, -1).map(function(command) {
     return command.split(' ');
   }); 
 };
