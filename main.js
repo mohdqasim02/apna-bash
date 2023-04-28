@@ -1,4 +1,5 @@
 const fs = require('fs');
+let PWD = process.env.PWD; 
 
 const formatDirectories = function(list) {
   return list.join(',').replaceAll(',' , ' '); 
@@ -10,28 +11,44 @@ const formatInput = function(commands) {
   }); 
 };
 
-const pwd = function() {
-  console.log(process.env.PWD);
-};
-
 const getOrDefault = function(path) {
   return path || '.';
 };
 
+const display = function(text) {
+  if(text !== undefined)
+    console.log(text);
+};
+
+const execute = function(command, arg) {
+  const commands = {
+    ls: ls,
+    cd: cd,
+    pwd: pwd,
+  };
+  return commands[command](arg);
+};
+
+const pwd = function() {
+  return PWD; 
+};
+
 const ls = function(directory) {
   const directories = fs.readdirSync(getOrDefault(directory));
-  console.log(formatDirectories(directories));
+  return formatDirectories(directories);
 };
 
 const cd = function(path) {
-  process.chdir(getOrDefault(path));
-  process.env.PWD = process.cwd();
+  PWD = `${PWD}/${path}`;
 };
 
 const bash = function() {
   const input = fs.readFileSync(process.argv[2], 'utf-8');
   const commands = formatInput(input);
-  console.log(commands);
+
+  commands.forEach(function(command) {
+    display(execute(command[0], command[1]));
+  });
 };
 
 bash();
