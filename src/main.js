@@ -39,6 +39,12 @@ const cd = function(path) {
 };
 
 const main = function() {
+  const file = process.argv[2];
+  if (!fs.existsSync(file)) {
+    console.error(`${file}: no such file found`);
+    process.exit(1);
+  }
+
   const script = fs.readFileSync(process.argv[2], 'utf-8');
   const commands = getCommands(script);
 
