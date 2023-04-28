@@ -1,11 +1,11 @@
 const fs = require('fs');
-let PWD = process.env.PWD; 
+let pwd = process.env.PWD; 
 
-const formatDirectories = function(list) {
-  return list.join(',').replaceAll(',' , ' '); 
+const formatFiles = function(files) {
+  return files.join(',').replaceAll(',' , ' '); 
 };
 
-const formatInput = function(commands) {
+const getCommands = function(commands) {
   return commands.split('\n').slice(0, -1).map(function(command) {
     return command.split(' ');
   }); 
@@ -16,39 +16,41 @@ const getOrDefault = function(path) {
 };
 
 const display = function(text) {
-  if(text !== undefined)
+  if(text !== undefined) {
     console.log(text);
+  }
 };
 
 const execute = function(command, arg) {
   const commands = {
     ls: ls,
     cd: cd,
-    pwd: pwd,
+    pwd: getPwd,
   };
+
   return commands[command](arg);
 };
 
-const pwd = function() {
-  return PWD; 
+const getPwd = function() {
+  return pwd; 
 };
 
 const ls = function(directory) {
-  const directories = fs.readdirSync(getOrDefault(directory));
-  return formatDirectories(directories);
+  const files = fs.readdirSync(getOrDefault(directory));
+  return formatFiles(files);
 };
 
 const cd = function(path) {
-  PWD = `${PWD}/${path}`;
+  pwd = `${pwd}/${path}`;
 };
 
-const bash = function() {
-  const input = fs.readFileSync(process.argv[2], 'utf-8');
-  const commands = formatInput(input);
+const main = function() {
+  const script = fs.readFileSync(process.argv[2], 'utf-8');
+  const commands = getCommands(script);
 
   commands.forEach(function(command) {
     display(execute(command[0], command[1]));
   });
 };
 
-bash();
+main();
