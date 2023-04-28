@@ -28,10 +28,10 @@ const cd = function(path) {
   process.env.PWD = process.cwd();
 };
 
-const main = function() {
-  const input = fs.readFileSync('./apna-script.ab', 'utf-8');
+const bash = function() {
+  const input = fs.readFileSync(process.argv[2], 'utf-8');
   const commands = formatInput(input);
   console.log(commands);
 };
 
-main();
+bash();
