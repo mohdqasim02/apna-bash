@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {ls, cd, pwd, echo} = require('../lib/utilities.js');
+const utils = require('../lib/utilities.js');
 
 const handleWildCard = function(env, args) {
   return args.flatMap(function (arg) {
@@ -13,18 +13,12 @@ const handleWildCard = function(env, args) {
 };
 
 const isValidCommand = function(expression) {
-  const commands = ['ls', 'cd', 'pwd', 'echo'];
-  return commands.includes(expression.command);
+  return utils[expression.command] !== undefined;
 };
 
 const execute = function(env, command, args) {
-  const commands = {
-    ls: ls,
-    cd: cd,
-    pwd: pwd,
-    echo: echo
-  }
-  return commands[command](env, handleWildCard(env, args))
+  const commandToExecute = utils[command];
+  return commandToExecute(env, handleWildCard(env, args))
 };
 
 const print = function(output, error) {
