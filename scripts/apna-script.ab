@@ -1,17 +1,17 @@
+echo 'hello world'
+echo ~
+echo *
 pwd
 ls
 cd workspace
 pwd
 ls
-cd -
+cd ../..
 pwd 
 ls
-cd ../..
+cd -
 pwd
 ls
-echo ~
-echo -
-echo *
 cd -
 pwd
 ls
