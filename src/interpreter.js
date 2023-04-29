@@ -1,4 +1,16 @@
+const fs = require('fs');
 const {ls, cd, pwd, echo} = require('../lib/utilities.js');
+
+const handleWildCard = function(env, args) {
+  return args.flatMap(function (arg) {
+    switch(arg) {
+      case '~': return [env.home];
+      case '-': return [env.oldPwd];
+      case '*': return fs.readdirSync(env.pwd);
+    }
+    return arg;
+  });
+};
 
 const isValidCommand = function(expression) {
   const commands = ['ls', 'cd', 'pwd', 'echo'];
@@ -12,7 +24,12 @@ const execute = function(env, command, args) {
     pwd: pwd,
     echo: echo
   }
-  return commands[command](env, ...args)
+  return commands[command](env, handleWildCard(env, args))
+};
+
+const print = function(output, error) {
+  output && console.log(output);
+  error && console.log(error);
 };
 
 const interpret = function(environment, expression) {
@@ -22,8 +39,7 @@ const interpret = function(environment, expression) {
   }
 
   const {env, output, error} = execute(environment, expression.command, expression.args);
-  output && console.log(output);
-  error && console.error(error);
+  print(output, error);
   return env;
 };
 
