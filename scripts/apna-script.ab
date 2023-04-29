@@ -6,11 +6,11 @@ ls
 cd workspace
 pwd
 ls
+cd personal
+pwd
+ls
 cd ../..
 pwd 
-ls
-cd -
-pwd
 ls
 cd -
 pwd
