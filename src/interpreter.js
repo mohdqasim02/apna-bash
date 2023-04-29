@@ -1,7 +1,7 @@
-const {ls, cd, pwd} = require('../lib/utilities.js');
+const {ls, cd, pwd, echo} = require('../lib/utilities.js');
 
 const isValidCommand = function(expression) {
-  const commands = ['ls', 'cd', 'pwd'];
+  const commands = ['ls', 'cd', 'pwd', 'echo'];
   return commands.includes(expression.command);
 };
 
@@ -9,7 +9,8 @@ const execute = function(env, command, args) {
   const commands = {
     ls: ls,
     cd: cd,
-    pwd: pwd
+    pwd: pwd,
+    echo: echo
   }
   return commands[command](env, ...args)
 };
@@ -30,7 +31,7 @@ const run = function(commands) {
   const env = {
     pwd: process.env.PWD,
     home: process.env.HOME,
-    oldPwd: process.env.OLDPWD
+    oldPwd: process.env.OLDPWD,
   }
   return commands.reduce(interpret, env);
 };

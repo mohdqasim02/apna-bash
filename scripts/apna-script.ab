@@ -3,16 +3,15 @@ ls
 cd workspace
 pwd
 ls
-cd personal
-pwd
+cd -
+pwd 
 ls
 cd ../..
 pwd
-pksja
 ls
-cd /Users/JavaScript/
-pwd
-ls
-cd /Users/mohdqasim/workspace/JavaScript/projects/apna-bash/src
+echo ~
+echo -
+echo *
+cd -
 pwd
 ls
