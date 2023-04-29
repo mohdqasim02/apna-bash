@@ -8,7 +8,11 @@ pwd
 ls
 cd ../..
 pwd
+pksja
 ls
-cd /Users/mohdqasim/workspace/JavaScript/
+cd /Users/JavaScript/
+pwd
+ls
+cd /Users/mohdqasim/workspace/JavaScript/projects/apna-bash/src
 pwd
 ls

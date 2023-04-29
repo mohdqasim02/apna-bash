@@ -16,8 +16,8 @@ const execute = function(env, command, args) {
 
 const interpret = function(environment, expression) {
   if(!isValidCommand(expression)) {
-    console.error(`${expression.command}: is not a valid command`);
-    process.exit(1);
+    console.error(`zsh: is not a valid command: ${expression.command}`);
+    return environment;
   }
 
   const {env, output, error} = execute(environment, expression.command, expression.args);
@@ -28,7 +28,9 @@ const interpret = function(environment, expression) {
 
 const run = function(commands) {
   const env = {
-    pwd: process.env.PWD
+    pwd: process.env.PWD,
+    home: process.env.HOME,
+    oldPwd: process.env.OLDPWD
   }
   return commands.reduce(interpret, env);
 };
