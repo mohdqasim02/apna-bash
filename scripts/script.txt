@@ -1,1 +1,1 @@
-ls src urqiwo workspace
+ls *

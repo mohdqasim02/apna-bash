@@ -1,15 +1,18 @@
 const fs = require('fs');
 const utils = require('../lib/utilities.js');
 
-const handleWildCard = function(env, args) {
-  return args.flatMap(function (arg) {
-    switch(arg) {
-      case '~': return [env.home];
-      case '-': return [env.oldPwd];
-      case '*': return fs.readdirSync(env.pwd);
-    }
-    return arg;
+const expand = function(path) {
+  const startsWithQuote = /^[\"\']/;
+  if(startsWithQuote.test(path) || !path.includes('*')) return [path];
+
+  let contents = fs.readdirSync('.');
+  const [prefix, postfix] = path.split('*');
+
+  contents = contents.map(function(file) {
+    return prefix + file + postfix;
   });
+
+  return contents.filter(fs.existsSync);
 };
 
 const isValidCommand = function(expression) {
@@ -18,7 +21,8 @@ const isValidCommand = function(expression) {
 
 const execute = function(env, command, args) {
   const commandToExecute = utils[command];
-  return commandToExecute(env, handleWildCard(env, args))
+  const resolvedArgs = args.flatMap(expand);
+  return commandToExecute(env, resolvedArgs);
 };
 
 const print = function(output, error) {
@@ -34,6 +38,7 @@ const interpret = function(environment, expression) {
 
   const {env, output, error} = execute(environment, expression.command, expression.args);
   print(output, error);
+
   return env;
 };
 
