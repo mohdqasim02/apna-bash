@@ -4,15 +4,18 @@ const utils = require('../lib/utilities.js');
 const expand = function(path) {
   const startsWithQuote = /^[\"\']/;
   if(startsWithQuote.test(path) || !path.includes('*')) return [path];
+  const [prefix, ...postfixes] = path.split('*');
 
-  let contents = fs.readdirSync('.');
-  const [prefix, postfix] = path.split('*');
+  if(!fs.existsSync(`${prefix}/`)) {
+    return [];
+  }
 
-  contents = contents.map(function(file) {
-    return prefix + file + postfix;
+  const postfix = postfixes.join('*');
+  const contents = fs.readdirSync(prefix || '.');
+
+  return contents.flatMap(function(file) {
+    return expand(`${prefix}${file}${postfix}`);
   });
-
-  return contents.filter(fs.existsSync);
 };
 
 const isValidCommand = function(expression) {
