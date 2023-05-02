@@ -18,14 +18,14 @@ const expand = function(path) {
   });
 };
 
-const isValidCommand = function(expression) {
-  return utils[expression.command] !== undefined;
+const isValidCommand = function(programs, expression) {
+  return programs[expression.command] !== undefined;
 };
 
-const execute = function(env, command, args) {
-  const commandToExecute = utils[command];
+const execute = function(programs, command, args) {
+  const commandToExecute = programs[command];
   const resolvedArgs = args.flatMap(expand);
-  return commandToExecute(env, resolvedArgs);
+  return commandToExecute(resolvedArgs);
 };
 
 const print = function(output, error) {
@@ -34,12 +34,13 @@ const print = function(output, error) {
 };
 
 const interpret = function(environment, expression) {
-  if(!isValidCommand(expression)) {
+  const programs = utils.shell(environment);
+  if(!isValidCommand(programs, expression)) {
     console.error(`zsh: is not a valid command: ${expression.command}`);
     return environment;
   }
 
-  const {env, output, error} = execute(environment, expression.command, expression.args);
+  const {env, output, error} = execute(programs, expression.command, expression.args);
   print(output, error);
 
   return env;
